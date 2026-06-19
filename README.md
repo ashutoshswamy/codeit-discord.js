@@ -72,6 +72,20 @@ npm run deploy:global  # deploy commands globally
 
 ---
 
+### Episode 5 — Message Components & Button Interactions
+
+**Files added:** `src/commands/utility/feedback.js`  
+**Files changed:** `src/events/interactionCreate.js`
+
+- `/feedback` — sends a button-based feedback prompt with 30s collector:
+  - **Good** (green) → updates message with thank-you reply
+  - **Bad** (red) → updates message with improvement reply
+  - Buttons disabled automatically when collector expires
+  - Guards against other users clicking (ephemeral rejection)
+- Fixed `interactionCreate.js` error handler: now checks `interaction.replied` / `interaction.deferred` before choosing `followUp` vs `reply`, preventing double-reply crashes; error reply now ephemeral
+
+---
+
 ## Setup
 
 ```bash
