@@ -4,11 +4,27 @@ module.exports = {
     name: "interactionCreate",
 
     async execute(interaction, client){
+        if (interaction.isModalSubmit()) {
+            if (interaction.customId === "staff_application") {
+                const name = interaction.fields.getTextInputValue('name_input');
+                const reason = interaction.fields.getTextInputValue('app_reason');
+
+                await interaction.reply({
+                    content: `✅ Application submitted!\n\n**Name:** ${name}\n**Reason:** ${reason}`,
+                    ephemeral: true,
+                });
+
+                console.log(`New Application Submitted!\nName: ${name}\nReason: ${reason}`);
+            }
+
+            return;
+        }
+
         if (!interaction.isChatInputCommand()) return;
 
         const command = client.commands.get(interaction.commandName);
 
-         if (!command) {
+        if (!command) {
             console.error(`[InteractionCreate] ❌  Unknown command: ${interaction.commandName}`);
             await interaction.reply({
                 content: '⚠️ Unknown command. It may have been removed.',
