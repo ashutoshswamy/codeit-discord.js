@@ -1,0 +1,94 @@
+# codeit Bot
+
+A Discord bot built with [discord.js v14](https://discord.js.org/), developed episodically as part of the **codeit** YouTube series.
+
+[![YouTube](https://img.shields.io/badge/YouTube-codeitofficial3-FF0000?style=for-the-badge&logo=youtube&logoColor=white)](https://www.youtube.com/@codeitofficial3)
+[![Ko-fi](https://img.shields.io/badge/Ko--fi-ashutoshswamy-FF5E5B?style=for-the-badge&logo=ko-fi&logoColor=white)](https://ko-fi.com/ashutoshswamy)
+
+---
+
+## Episodes
+
+### Episode 1 — Project Setup & First Commands
+
+**Files added:** `index.js`, `package.json`, `.gitignore`
+
+- Initialized Node.js project with `discord.js` and `dotenv` dependencies
+- Created a `Client` with `Guilds`, `GuildMessages`, and `MessageContent` intents
+- Handled the `clientReady` event to log the bot tag on login
+- Added prefix-based message commands:
+  - `!ping` → replies `Pong!`
+  - `!youtube` → replies with the channel link
+
+---
+
+### Episode 2 — Slash Commands & Embeds
+
+**Files changed:** `index.js`
+
+- Registered slash commands via Discord REST API (`applicationCommands` route)
+- Added two slash commands:
+  - `/ping` → replies with `Pong!` (ephemeral)
+  - `/serverinfo` → replies with a rich embed showing server name, icon, member count, creation date
+- Handled `interactionCreate` event to route slash command interactions
+
+---
+
+### Episode 3 — Project Restructure & Handler Architecture
+
+**Files added:** `src/index.js`, `src/config.js`, `src/deployCommands.js`, `src/handlers/commandHandler.js`, `src/handlers/eventHandler.js`, `src/events/ready.js`, `src/events/interactionCreate.js`, `src/commands/utility/ping.js`
+
+- Migrated from single `index.js` to structured `src/` directory
+- Extracted intents into `src/config.js`
+- **Command Handler** (`src/handlers/commandHandler.js`): recursively walks `src/commands/`, validates `data` + `execute` exports, loads all commands into `client.commands` Collection
+- **Event Handler** (`src/handlers/eventHandler.js`): reads `src/events/`, registers handlers supporting both `once` and `on` events
+- **Deploy Script** (`src/deployCommands.js`): pushes slash commands to Discord; supports `--guild` (dev) and `--global` (production) flags
+- Converted `/ping` to standalone module with latency embed showing roundtrip and WebSocket heartbeat
+- `ready.js` logs guild count on startup
+- `interactionCreate.js` handles unknown commands with ephemeral error replies
+
+**npm scripts added:**
+
+```
+npm start              # node src/index.js
+npm run dev            # node --watch src/index.js
+npm run deploy:guild   # deploy commands to test guild
+npm run deploy:global  # deploy commands globally
+```
+
+---
+
+### Episode 4 — New Utility Commands
+
+**Files added:** `src/commands/utility/echo.js`, `src/commands/utility/userinfo.js`
+
+- `/echo <message>` — repeats the user's input back as a reply
+- `/userinfo [user]` — displays member info embed:
+  - Username, user tag, bot status
+  - Server join date (relative timestamp)
+  - Account creation date (full timestamp)
+  - User avatar as thumbnail
+  - Defaults to command invoker if no user specified
+
+---
+
+## Setup
+
+```bash
+npm install
+```
+
+Create a `.env` file:
+
+```env
+BOT_TOKEN=your_bot_token
+CLIENT_ID=your_client_id
+GUILD_ID=your_test_guild_id
+```
+
+Deploy commands then start:
+
+```bash
+npm run deploy:guild   # or deploy:global for production
+npm run dev            # or npm start
+```
