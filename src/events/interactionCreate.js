@@ -4,6 +4,20 @@ module.exports = {
     name: "interactionCreate",
 
     async execute(interaction, client){
+        if (interaction.isAutocomplete()) {
+            const command = client.commands.get(interaction.commandName);
+
+            if (!command?.autocomplete) return;
+
+            try {
+                await command.autocomplete(interaction, client);
+            } catch(error) {
+                console.error(`[InteractionCreate] ❌  Error executing autocomplete for command: ${interaction.commandName}`);
+            }
+
+            return;
+        }
+
         if (interaction.isModalSubmit()) {
             if (interaction.customId === "staff_application") {
                 const name = interaction.fields.getTextInputValue('name_input');
