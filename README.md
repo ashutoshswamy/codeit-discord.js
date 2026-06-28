@@ -114,6 +114,22 @@ npm run deploy:global  # deploy commands globally
 
 ---
 
+### Episode 8 — Autocomplete Interactions
+
+**Files added:** `src/commands/utility/search.js`  
+**Files changed:** `src/events/interactionCreate.js`
+
+- `/search <query>` — searches a coding technology list with autocomplete:
+  - Choices: `JavaScript`, `Python`, `TypeScript`, `HTML`, `Tailwind CSS`, `React`, `Node.js`, `MySQL`
+  - Filters case-insensitively as user types, returns up to 25 matches
+  - On submit, replies with selected technology
+- `interactionCreate.js` updated to handle `isAutocomplete()`:
+  - Looks up command from `client.commands`, calls `command.autocomplete()` if defined
+  - Returns early so slash command / modal routing is unaffected
+  - Errors logged but not propagated (autocomplete has no reply path on error)
+
+---
+
 ## Setup
 
 ```bash
