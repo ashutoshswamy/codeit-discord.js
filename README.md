@@ -130,6 +130,20 @@ npm run deploy:global  # deploy commands globally
 
 ---
 
+### Episode 9 — Components V2 Layout
+
+**Files added:** `src/commands/utility/profile.js`  
+**Files changed:** `src/events/interactionCreate.js`
+
+- `/profile` — renders a structured profile card using discord.js Components V2:
+  - `TextDisplayBuilder` for header text
+  - `SeparatorBuilder` with small spacing divider
+  - `SectionBuilder` with username + description text alongside avatar `ThumbnailBuilder`
+  - All wrapped in `ContainerBuilder` and sent with `MessageFlags.IsComponentsV2` flag
+- `interactionCreate.js`: error log now includes full error stack (`\n\n${error}`)
+
+---
+
 ## Setup
 
 ```bash
